@@ -332,6 +332,7 @@
   </div>
 
   <div class="actions">
+
     <button onclick="exportImage()">
       📸 Exporter l'image
     </button>
@@ -339,24 +340,29 @@
     <button onclick="resetCollection()">
       🔄 Réinitialiser
     </button>
+
   </div>
 
 </section>
 
 <div class="search-container">
+
   <input
     type="text"
     id="search"
     placeholder="🔎 Rechercher un esprit ou une variante..."
     oninput="displaySpirits()"
   >
+
 </div>
 
 <div class="legend">
+
   <span>⚪ Non obtenu</span>
   <span>🟢 Obtenu</span>
   <span>🟡 Maîtrisé</span>
   <span>🔴 Perdu</span>
+
 </div>
 
 <main id="spiritsContainer"></main>
@@ -369,17 +375,8 @@
 
 /*
 ====================================================
-LISTE DES ESPRITS ET VARIANTES
+LISTE DES ESPRITS
 ====================================================
-
-Pour l'instant, "image" est vide.
-On remplacera les valeurs par les vraies URL
-des images dès qu'elles seront récupérées.
-
-0 = Non obtenu
-1 = Obtenu
-2 = Maîtrisé
-3 = Perdu
 */
 
 const spirits = [
@@ -610,9 +607,12 @@ SAUVEGARDE
 ====================================================
 */
 
-let collection = JSON.parse(
-  localStorage.getItem("espritsCollection")
-) || {};
+let collection =
+  JSON.parse(
+    localStorage.getItem(
+      "espritsCollection"
+    )
+  ) || {};
 
 
 /*
@@ -621,7 +621,10 @@ ID UNIQUE
 ====================================================
 */
 
-function getId(spriteName, variantName) {
+function getId(
+  spriteName,
+  variantName
+) {
 
   return (
     spriteName +
@@ -641,7 +644,7 @@ function getId(spriteName, variantName) {
 
 /*
 ====================================================
-SAUVEGARDER
+SAUVEGARDE
 ====================================================
 */
 
@@ -649,7 +652,9 @@ function saveCollection() {
 
   localStorage.setItem(
     "espritsCollection",
-    JSON.stringify(collection)
+    JSON.stringify(
+      collection
+    )
   );
 
 }
@@ -668,18 +673,26 @@ function getStatus(id) {
 }
 
 
-function getStatusName(status) {
+function getStatusName(
+  status
+) {
 
   if (status === 1) {
+
     return "🟢 Obtenu";
+
   }
 
   if (status === 2) {
+
     return "🟡 Maîtrisé";
+
   }
 
   if (status === 3) {
+
     return "🔴 Perdu";
+
   }
 
   return "⚪ Non obtenu";
@@ -695,15 +708,19 @@ CLIC
 
 function clickVariant(id) {
 
-  let status = getStatus(id);
+  let status =
+    getStatus(id);
 
   status++;
 
   if (status > 3) {
+
     status = 0;
+
   }
 
-  collection[id] = status;
+  collection[id] =
+    status;
 
   saveCollection();
 
@@ -729,170 +746,208 @@ function displaySpirits() {
 
   const search =
     document
-      .getElementById("search")
+      .getElementById(
+        "search"
+      )
       .value
       .toLowerCase();
 
   container.innerHTML = "";
 
 
-  spirits.forEach(sprite => {
+  spirits.forEach(
+    sprite => {
 
-    const filteredVariants =
-      sprite.variants.filter(
-        variant =>
-          sprite.name
-            .toLowerCase()
-            .includes(search) ||
+      const filteredVariants =
+        sprite.variants.filter(
+          variant =>
 
-          variant[0]
-            .toLowerCase()
-            .includes(search)
-      );
+            sprite.name
+              .toLowerCase()
+              .includes(search)
 
+            ||
 
-    if (
-      filteredVariants.length === 0
-    ) {
-      return;
-    }
+            variant[0]
+              .toLowerCase()
+              .includes(search)
 
-
-    const section =
-      document.createElement(
-        "section"
-      );
-
-    section.className =
-      "sprite-section";
-
-
-    section.innerHTML = `
-      <h2>
-        ${sprite.name}
-      </h2>
-
-      <div class="variants-grid"></div>
-    `;
-
-
-    const grid =
-      section.querySelector(
-        ".variants-grid"
-      );
-
-
-    filteredVariants.forEach(
-      variant => {
-
-        const variantName =
-          variant[0];
-
-        const image =
-          variant[1];
-
-        const id =
-          getId(
-            sprite.name,
-            variantName
-          );
-
-        const status =
-          getStatus(id);
-
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-
-        card.className =
-          "variant-card";
-
-
-        if (status === 1) {
-
-          card.classList.add(
-            "status-obtenu"
-          );
-
-        }
-
-
-        if (status === 2) {
-
-          card.classList.add(
-            "status-maitrise"
-          );
-
-        }
-
-
-        if (status === 3) {
-
-          card.classList.add(
-            "status-perdu"
-          );
-
-        }
-
-
-        let imageHTML = "";
-
-
-        if (image) {
-
-          imageHTML = `
-            <img
-              class="variant-image"
-              src="${image}"
-              alt="${sprite.name} ${variantName}"
-            >
-          `;
-
-        } else {
-
-          imageHTML = `
-            <div class="fallback-image">
-              👻
-            </div>
-          `;
-
-        }
-
-
-        card.innerHTML = `
-
-          ${imageHTML}
-
-          <div class="variant-name">
-            ${variantName}
-          </div>
-
-          <div class="status">
-            ${getStatusName(status)}
-          </div>
-
-        `;
-
-
-        card.addEventListener(
-          "click",
-          () =>
-            clickVariant(id)
         );
 
 
-        grid.appendChild(card);
+      if (
+        filteredVariants.length === 0
+      ) {
+
+        return;
 
       }
-    );
 
 
-    container.appendChild(section);
+      const section =
+        document.createElement(
+          "section"
+        );
 
-  });
+      section.className =
+        "sprite-section";
+
+
+      section.innerHTML = `
+
+        <h2>
+          ${sprite.name}
+        </h2>
+
+        <div
+          class="variants-grid"
+        ></div>
+
+      `;
+
+
+      const grid =
+        section.querySelector(
+          ".variants-grid"
+        );
+
+
+      filteredVariants.forEach(
+        variant => {
+
+          const variantName =
+            variant[0];
+
+          const image =
+            variant[1];
+
+          const id =
+            getId(
+              sprite.name,
+              variantName
+            );
+
+          const status =
+            getStatus(id);
+
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "variant-card";
+
+
+          if (
+            status === 1
+          ) {
+
+            card.classList.add(
+              "status-obtenu"
+            );
+
+          }
+
+
+          if (
+            status === 2
+          ) {
+
+            card.classList.add(
+              "status-maitrise"
+            );
+
+          }
+
+
+          if (
+            status === 3
+          ) {
+
+            card.classList.add(
+              "status-perdu"
+            );
+
+          }
+
+
+          let imageHTML = "";
+
+
+          if (image) {
+
+            imageHTML = `
+
+              <img
+                class="variant-image"
+                src="${image}"
+                alt="${sprite.name} ${variantName}"
+              >
+
+            `;
+
+          }
+
+          else {
+
+            imageHTML = `
+
+              <div
+                class="fallback-image"
+              >
+                👻
+              </div>
+
+            `;
+
+          }
+
+
+          card.innerHTML = `
+
+            ${imageHTML}
+
+            <div
+              class="variant-name"
+            >
+              ${variantName}
+            </div>
+
+            <div
+              class="status"
+            >
+              ${getStatusName(
+                status
+              )}
+            </div>
+
+          `;
+
+
+          card.addEventListener(
+            "click",
+            () =>
+              clickVariant(id)
+          );
+
+
+          grid.appendChild(
+            card
+          );
+
+        }
+      );
+
+
+      container.appendChild(
+        section
+      );
+
+    }
+  );
 
 }
 
@@ -975,10 +1030,14 @@ function updateStats() {
 
   const progress =
     total === 0
+
       ? 0
+
       : Math.round(
-          (collected / total) *
-          100
+          (
+            collected /
+            total
+          ) * 100
         );
 
 
@@ -1009,6 +1068,7 @@ function updateStats() {
   document.getElementById(
     "progressText"
   ).textContent =
+
     collected +
     " / " +
     total;
@@ -1017,16 +1077,10 @@ function updateStats() {
   document.getElementById(
     "progressBar"
   ).style.width =
+
     progress +
     "%";
 
-
-  /*
-    MAÎTRE DES ESPRITS
-
-    Tous les esprits doivent être
-    obtenus au minimum.
-  */
 
   if (
     collected === total
@@ -1037,7 +1091,9 @@ function updateStats() {
     ).style.display =
       "block";
 
-  } else {
+  }
+
+  else {
 
     document.getElementById(
       "masterBadge"
@@ -1063,7 +1119,9 @@ function resetCollection() {
     );
 
 
-  if (!confirmation) {
+  if (
+    !confirmation
+  ) {
 
     return;
 
@@ -1083,18 +1141,695 @@ function resetCollection() {
 
 /*
 ====================================================
-EXPORT
+EXPORTER LA COLLECTION EN IMAGE
 ====================================================
-
-À faire dans la prochaine modification :
-générer une vraie image de la collection.
 */
 
-function exportImage() {
+async function exportImage() {
 
-  alert(
-    "L'export d'image arrive dans la prochaine étape !"
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  const scale = 2;
+
+  const padding = 50;
+
+  const titleHeight = 100;
+
+  const rowHeight = 70;
+
+
+  const columns = [
+
+    "Sprite",
+
+    "Normal",
+
+    "Or",
+
+    "Gélifié",
+
+    "Galaxie",
+
+    "Holofoil",
+
+    "Cube"
+
+  ];
+
+
+  const columnWidths = [
+
+    220,
+
+    140,
+
+    140,
+
+    140,
+
+    140,
+
+    140,
+
+    140
+
+  ];
+
+
+  const totalWidth =
+
+    columnWidths.reduce(
+
+      (
+        sum,
+        width
+      ) =>
+
+        sum +
+        width,
+
+      0
+
+    )
+
+    +
+
+    padding * 2;
+
+
+  const rows = [];
+
+
+  spirits.forEach(
+    sprite => {
+
+      const row = {
+
+        name:
+          sprite.name,
+
+        variants: {}
+
+      };
+
+
+      sprite.variants.forEach(
+        variant => {
+
+          const variantName =
+            variant[0];
+
+
+          const id =
+            getId(
+              sprite.name,
+              variantName
+            );
+
+
+          row.variants[
+            variantName
+          ] =
+
+            getStatus(id);
+
+        }
+      );
+
+
+      rows.push(row);
+
+    }
   );
+
+
+  const totalHeight =
+
+    padding * 2
+
+    +
+
+    titleHeight
+
+    +
+
+    rowHeight
+
+    +
+
+    rows.length *
+    rowHeight;
+
+
+  canvas.width =
+
+    totalWidth *
+    scale;
+
+
+  canvas.height =
+
+    totalHeight *
+    scale;
+
+
+  ctx.scale(
+    scale,
+    scale
+  );
+
+
+  /*
+  FOND
+  */
+
+  const gradient =
+
+    ctx.createLinearGradient(
+
+      0,
+
+      0,
+
+      totalWidth,
+
+      totalHeight
+
+    );
+
+
+  gradient.addColorStop(
+
+    0,
+
+    "#06132f"
+
+  );
+
+
+  gradient.addColorStop(
+
+    0.5,
+
+    "#071d4d"
+
+  );
+
+
+  gradient.addColorStop(
+
+    1,
+
+    "#020817"
+
+  );
+
+
+  ctx.fillStyle =
+    gradient;
+
+
+  ctx.fillRect(
+
+    0,
+
+    0,
+
+    totalWidth,
+
+    totalHeight
+
+  );
+
+
+  /*
+  TITRE
+  */
+
+  ctx.fillStyle =
+    "#ffffff";
+
+
+  ctx.font =
+    "bold 34px Arial";
+
+
+  ctx.textAlign =
+    "left";
+
+
+  ctx.fillText(
+
+    "👻 Ma collection d'esprits Fortnite",
+
+    padding,
+
+    padding + 45
+
+  );
+
+
+  /*
+  PROGRESSION
+  */
+
+  let total = 0;
+
+  let collected = 0;
+
+
+  spirits.forEach(
+    sprite => {
+
+      sprite.variants.forEach(
+        variant => {
+
+          total++;
+
+
+          const id =
+            getId(
+              sprite.name,
+              variant[0]
+            );
+
+
+          if (
+            getStatus(id) !== 0
+          ) {
+
+            collected++;
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  ctx.font =
+    "18px Arial";
+
+
+  ctx.fillStyle =
+    "#bcdcff";
+
+
+  ctx.fillText(
+
+    `Progression : ${collected} / ${total}`,
+
+    padding,
+
+    padding + 75
+
+  );
+
+
+  /*
+  TABLEAU
+  */
+
+  const tableY =
+
+    padding +
+    titleHeight;
+
+
+  let currentX =
+    padding;
+
+
+  /*
+  EN-TÊTES
+  */
+
+  columns.forEach(
+
+    (
+      column,
+      index
+    ) => {
+
+      ctx.fillStyle =
+        "#1265d8";
+
+
+      ctx.fillRect(
+
+        currentX,
+
+        tableY,
+
+        columnWidths[index],
+
+        rowHeight
+
+      );
+
+
+      ctx.strokeStyle =
+        "#4da3ff";
+
+
+      ctx.strokeRect(
+
+        currentX,
+
+        tableY,
+
+        columnWidths[index],
+
+        rowHeight
+
+      );
+
+
+      ctx.fillStyle =
+        "#ffffff";
+
+
+      ctx.font =
+        "bold 16px Arial";
+
+
+      ctx.textAlign =
+        "center";
+
+
+      ctx.fillText(
+
+        column,
+
+        currentX +
+
+        columnWidths[index] / 2,
+
+        tableY + 43
+
+      );
+
+
+      currentX +=
+
+        columnWidths[index];
+
+    }
+
+  );
+
+
+  /*
+  LIGNES
+  */
+
+  rows.forEach(
+
+    (
+      row,
+      rowIndex
+    ) => {
+
+      const y =
+
+        tableY +
+
+        rowHeight +
+
+        rowIndex *
+        rowHeight;
+
+
+      let x =
+        padding;
+
+
+      /*
+      NOM DU SPRITE
+      */
+
+      ctx.fillStyle =
+
+        rowIndex % 2 === 0
+
+          ? "#0b2857"
+
+          : "#082044";
+
+
+      ctx.fillRect(
+
+        x,
+
+        y,
+
+        columnWidths[0],
+
+        rowHeight
+
+      );
+
+
+      ctx.strokeStyle =
+        "#315b8f";
+
+
+      ctx.strokeRect(
+
+        x,
+
+        y,
+
+        columnWidths[0],
+
+        rowHeight
+
+      );
+
+
+      ctx.fillStyle =
+        "#ffffff";
+
+
+      ctx.font =
+        "bold 15px Arial";
+
+
+      ctx.textAlign =
+        "center";
+
+
+      ctx.fillText(
+
+        row.name,
+
+        x +
+
+        columnWidths[0] / 2,
+
+        y + 42
+
+      );
+
+
+      x +=
+        columnWidths[0];
+
+
+      /*
+      VARIANTES
+      */
+
+      const variantNames = [
+
+        "Normal",
+
+        "Or",
+
+        "Gélifié",
+
+        "Galaxie",
+
+        "Holofoil",
+
+        "Cube"
+
+      ];
+
+
+      variantNames.forEach(
+
+        (
+          variantName,
+          variantIndex
+        ) => {
+
+          const status =
+
+            row.variants[
+              variantName
+            ];
+
+
+          let background =
+            "#07152e";
+
+
+          let text =
+            "—";
+
+
+          if (
+            status === 1
+          ) {
+
+            background =
+              "#145c38";
+
+            text =
+              "✓";
+
+          }
+
+
+          if (
+            status === 2
+          ) {
+
+            background =
+              "#806900";
+
+            text =
+              "★";
+
+          }
+
+
+          if (
+            status === 3
+          ) {
+
+            background =
+              "#702525";
+
+            text =
+              "✕";
+
+          }
+
+
+          const width =
+
+            columnWidths[
+              variantIndex + 1
+            ];
+
+
+          ctx.fillStyle =
+            background;
+
+
+          ctx.fillRect(
+
+            x,
+
+            y,
+
+            width,
+
+            rowHeight
+
+          );
+
+
+          ctx.strokeStyle =
+            "#315b8f";
+
+
+          ctx.strokeRect(
+
+            x,
+
+            y,
+
+            width,
+
+            rowHeight
+
+          );
+
+
+          ctx.fillStyle =
+            "#ffffff";
+
+
+          ctx.font =
+            "bold 26px Arial";
+
+
+          ctx.textAlign =
+            "center";
+
+
+          ctx.fillText(
+
+            text,
+
+            x +
+            width / 2,
+
+            y + 45
+
+          );
+
+
+          x +=
+            width;
+
+        }
+
+      );
+
+    }
+
+  );
+
+
+  /*
+  TÉLÉCHARGEMENT
+  */
+
+  const link =
+
+    document.createElement(
+      "a"
+    );
+
+
+  link.download =
+
+    "ma-collection-esprits.png";
+
+
+  link.href =
+
+    canvas.toDataURL(
+      "image/png"
+    );
+
+
+  link.click();
 
 }
 
