@@ -40,7 +40,7 @@
     }
 
     .top-panel {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto 25px;
       padding: 20px;
       border-radius: 20px;
@@ -125,7 +125,7 @@
     }
 
     .search-container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto 20px;
     }
 
@@ -144,54 +144,88 @@
       color: #8caed8;
     }
 
-    .spirits-grid {
-      max-width: 1100px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 16px;
+    .legend {
+      max-width: 1200px;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .spirit-card {
-      position: relative;
-      min-height: 180px;
-      padding: 18px;
+    .legend span {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(5, 20, 50, 0.6);
+      color: #bcdcff;
+      font-size: 14px;
+    }
+
+    .sprite-section {
+      max-width: 1200px;
+      margin: 35px auto;
+    }
+
+    .sprite-section h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #d9edff;
+    }
+
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .variant-card {
+      min-height: 190px;
+      padding: 12px;
       border-radius: 18px;
       background: rgba(8, 32, 78, 0.8);
       border: 2px solid rgba(100, 180, 255, 0.15);
       cursor: pointer;
       user-select: none;
       transition: 0.25s;
+      text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      text-align: center;
     }
 
-    .spirit-card:hover {
+    .variant-card:hover {
       transform: translateY(-5px);
       border-color: #3296ff;
       box-shadow: 0 10px 30px rgba(0, 130, 255, 0.25);
     }
 
-    .spirit-icon {
-      font-size: 55px;
-      margin-bottom: 12px;
+    .variant-image {
+      width: 100%;
+      height: 115px;
+      object-fit: contain;
+      margin-bottom: 8px;
     }
 
-    .spirit-name {
-      font-size: 17px;
+    .fallback-image {
+      width: 100%;
+      height: 115px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 55px;
+    }
+
+    .variant-name {
       font-weight: bold;
+      font-size: 15px;
     }
 
     .status {
-      margin-top: 8px;
+      margin-top: 7px;
       font-size: 13px;
       font-weight: bold;
     }
 
-    /* Obtenu */
     .status-obtenu {
       border-color: #20d66b;
       background: rgba(20, 130, 70, 0.25);
@@ -201,7 +235,6 @@
       color: #43f58b;
     }
 
-    /* Maîtrisé */
     .status-maitrise {
       border-color: #ffd000;
       background: rgba(150, 115, 0, 0.25);
@@ -211,7 +244,6 @@
       color: #ffe04d;
     }
 
-    /* Perdu */
     .status-perdu {
       border-color: #ff4040;
       background: rgba(150, 20, 20, 0.25);
@@ -219,23 +251,6 @@
 
     .status-perdu .status {
       color: #ff6868;
-    }
-
-    .legend {
-      max-width: 1100px;
-      margin: 30px auto;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      color: #bcdcff;
-      font-size: 14px;
-    }
-
-    .legend span {
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: rgba(5, 20, 50, 0.6);
     }
 
     footer {
@@ -254,18 +269,18 @@
         padding: 10px;
       }
 
-      .spirits-grid {
+      .variants-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
       }
 
-      .spirit-card {
-        min-height: 150px;
-        padding: 12px;
+      .variant-card {
+        min-height: 160px;
       }
 
-      .spirit-icon {
-        font-size: 42px;
+      .variant-image,
+      .fallback-image {
+        height: 90px;
       }
     }
   </style>
@@ -273,355 +288,828 @@
 
 <body>
 
-  <header>
-    <h1>👻 Esprits Fortnite</h1>
-    <p>Collectionne, maîtrise et suis tous tes esprits.</p>
-  </header>
+<header>
+  <h1>👻 Esprits Fortnite</h1>
+  <p>Collectionne, maîtrise et suis tous tes esprits.</p>
+</header>
 
-  <section class="top-panel">
+<section class="top-panel">
 
-    <div class="stats">
+  <div class="stats">
 
-      <div class="stat">
-        <div class="stat-number" id="obtainedCount">0</div>
-        <div class="stat-label">Esprits obtenus</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-number" id="masteredCount">0</div>
-        <div class="stat-label">Esprits maîtrisés</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-number" id="lostCount">0</div>
-        <div class="stat-label">Esprits perdus</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-number" id="totalCount">0</div>
-        <div class="stat-label">Total</div>
-      </div>
-
+    <div class="stat">
+      <div class="stat-number" id="obtainedCount">0</div>
+      <div class="stat-label">Obtenus</div>
     </div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
+    <div class="stat">
+      <div class="stat-number" id="masteredCount">0</div>
+      <div class="stat-label">Maîtrisés</div>
     </div>
 
-    <p style="text-align:center; color:#bcdcff;">
-      Progression : <span id="progressText">0%</span>
-    </p>
-
-    <div id="masterBadge">
-      👑 MAÎTRE DES ESPRITS — Tu as obtenu tous les esprits !
+    <div class="stat">
+      <div class="stat-number" id="lostCount">0</div>
+      <div class="stat-label">Perdus</div>
     </div>
 
-    <div class="actions">
-      <button onclick="exportImage()">
-        📸 Exporter l'image
-      </button>
-
-      <button onclick="resetCollection()">
-        🔄 Réinitialiser
-      </button>
+    <div class="stat">
+      <div class="stat-number" id="totalCount">0</div>
+      <div class="stat-label">Total</div>
     </div>
 
-  </section>
-
-  <div class="search-container">
-    <input
-      type="text"
-      id="search"
-      placeholder="🔎 Rechercher un esprit..."
-      oninput="displaySpirits()"
-    >
   </div>
 
-  <div class="legend">
-    <span>⚪ Non obtenu</span>
-    <span>🟢 Obtenu</span>
-    <span>🟡 Maîtrisé</span>
-    <span>🔴 Perdu</span>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <main class="spirits-grid" id="spiritsGrid"></main>
+  <p style="text-align:center; color:#bcdcff;">
+    Collection : <span id="progressText">0 / 0</span>
+  </p>
 
-  <footer>
-    Esprits Fortnite — Collection Tracker
-  </footer>
+  <div id="masterBadge">
+    👑 MAÎTRE DES ESPRITS — Tu as obtenu tous les esprits !
+  </div>
 
-  <script>
+  <div class="actions">
+    <button onclick="exportImage()">
+      📸 Exporter l'image
+    </button>
 
-    /*
-      POUR L'INSTANT :
-      Ce sont des esprits de test.
-      On remplacera cette liste par les vrais esprits plus tard.
-    */
+    <button onclick="resetCollection()">
+      🔄 Réinitialiser
+    </button>
+  </div>
 
-    const spirits = [
-      { id: 1, name: "Esprit Flamme", icon: "🔥" },
-      { id: 2, name: "Esprit Glace", icon: "❄️" },
-      { id: 3, name: "Esprit Foudre", icon: "⚡" },
-      { id: 4, name: "Esprit Ombre", icon: "🌑" },
-      { id: 5, name: "Esprit Lumière", icon: "✨" },
-      { id: 6, name: "Esprit Nature", icon: "🌿" },
-      { id: 7, name: "Esprit Galaxie", icon: "🌌" },
-      { id: 8, name: "Esprit Or", icon: "🏆" },
-      { id: 9, name: "Esprit Cristal", icon: "💎" },
-      { id: 10, name: "Esprit Cube", icon: "🟪" },
-      { id: 11, name: "Esprit Quack", icon: "🦆" },
-      { id: 12, name: "Esprit Gélifié", icon: "🫧" }
-    ];
+</section>
 
-    /*
-      0 = Non obtenu
-      1 = Obtenu
-      2 = Maîtrisé
-      3 = Perdu
-    */
+<div class="search-container">
+  <input
+    type="text"
+    id="search"
+    placeholder="🔎 Rechercher un esprit ou une variante..."
+    oninput="displaySpirits()"
+  >
+</div>
 
-    let collection = JSON.parse(
-      localStorage.getItem("espritsCollection")
-    ) || {};
+<div class="legend">
+  <span>⚪ Non obtenu</span>
+  <span>🟢 Obtenu</span>
+  <span>🟡 Maîtrisé</span>
+  <span>🔴 Perdu</span>
+</div>
 
-    function saveCollection() {
-      localStorage.setItem(
-        "espritsCollection",
-        JSON.stringify(collection)
-      );
-    }
+<main id="spiritsContainer"></main>
 
-    function getStatus(id) {
-      return collection[id] || 0;
-    }
+<footer>
+  Esprits Fortnite — Collection Tracker
+</footer>
 
-    function getStatusName(status) {
+<script>
 
-      if (status === 1) return "🟢 Obtenu";
+/*
+====================================================
+LISTE DES ESPRITS ET VARIANTES
+====================================================
 
-      if (status === 2) return "🟡 Maîtrisé";
+Pour l'instant, "image" est vide.
+On remplacera les valeurs par les vraies URL
+des images dès qu'elles seront récupérées.
 
-      if (status === 3) return "🔴 Perdu";
+0 = Non obtenu
+1 = Obtenu
+2 = Maîtrisé
+3 = Perdu
+*/
 
-      return "⚪ Non obtenu";
-    }
+const spirits = [
 
-    function clickSpirit(id) {
+  {
+    name: "Eau",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
 
-      let currentStatus = getStatus(id);
+  {
+    name: "Terre",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
 
-      /*
-        Cycle :
-        Non obtenu → Obtenu
-        Obtenu → Maîtrisé
-        Maîtrisé → Perdu
-        Perdu → Non obtenu
-      */
+  {
+    name: "Feu",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""],
+      ["Cube", ""]
+    ]
+  },
 
-      currentStatus++;
+  {
+    name: "Poiscaille",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
 
-      if (currentStatus > 3) {
-        currentStatus = 0;
-      }
+  {
+    name: "Air",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
 
-      collection[id] = currentStatus;
+  {
+    name: "Canard",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""]
+    ]
+  },
 
-      saveCollection();
+  {
+    name: "Fantôme",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
 
-      displaySpirits();
-      updateStats();
-    }
+  {
+    name: "Démon",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""]
+    ]
+  },
 
-    function displaySpirits() {
+  {
+    name: "Roi",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
 
-      const grid = document.getElementById("spiritsGrid");
+  {
+    name: "Aura",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""]
+    ]
+  },
 
-      const searchValue =
-        document
-          .getElementById("search")
-          .value
-          .toLowerCase();
+  {
+    name: "Buteur",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
 
-      grid.innerHTML = "";
+  {
+    name: "Rêve",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
 
-      spirits
-        .filter(spirit =>
-          spirit.name
+  {
+    name: "Punk",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
+
+  {
+    name: "Boss",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
+
+  {
+    name: "Seven",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""]
+    ]
+  },
+
+  {
+    name: "Batman",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""],
+      ["Cube", ""]
+    ]
+  },
+
+  {
+    name: "Faucheuse",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Cube", ""]
+    ]
+  },
+
+  {
+    name: "Point Zéro",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""]
+    ]
+  },
+
+  {
+    name: "Cacahuète Grillée",
+    variants: [
+      ["Normal", ""]
+    ]
+  },
+
+  {
+    name: "Vini Jr.",
+    variants: [
+      ["Normal", ""]
+    ]
+  },
+
+  {
+    name: "Pollo",
+    variants: [
+      ["Normal", ""]
+    ]
+  }
+
+];
+
+
+/*
+====================================================
+SAUVEGARDE
+====================================================
+*/
+
+let collection = JSON.parse(
+  localStorage.getItem("espritsCollection")
+) || {};
+
+
+/*
+====================================================
+ID UNIQUE
+====================================================
+*/
+
+function getId(spriteName, variantName) {
+
+  return (
+    spriteName +
+    "_" +
+    variantName
+  )
+  .toLowerCase()
+  .replaceAll(" ", "_")
+  .replaceAll("é", "e")
+  .replaceAll("è", "e")
+  .replaceAll("ê", "e")
+  .replaceAll("à", "a")
+  .replaceAll(".", "");
+
+}
+
+
+/*
+====================================================
+SAUVEGARDER
+====================================================
+*/
+
+function saveCollection() {
+
+  localStorage.setItem(
+    "espritsCollection",
+    JSON.stringify(collection)
+  );
+
+}
+
+
+/*
+====================================================
+STATUT
+====================================================
+*/
+
+function getStatus(id) {
+
+  return collection[id] || 0;
+
+}
+
+
+function getStatusName(status) {
+
+  if (status === 1) {
+    return "🟢 Obtenu";
+  }
+
+  if (status === 2) {
+    return "🟡 Maîtrisé";
+  }
+
+  if (status === 3) {
+    return "🔴 Perdu";
+  }
+
+  return "⚪ Non obtenu";
+
+}
+
+
+/*
+====================================================
+CLIC
+====================================================
+*/
+
+function clickVariant(id) {
+
+  let status = getStatus(id);
+
+  status++;
+
+  if (status > 3) {
+    status = 0;
+  }
+
+  collection[id] = status;
+
+  saveCollection();
+
+  displaySpirits();
+
+  updateStats();
+
+}
+
+
+/*
+====================================================
+AFFICHAGE
+====================================================
+*/
+
+function displaySpirits() {
+
+  const container =
+    document.getElementById(
+      "spiritsContainer"
+    );
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase();
+
+  container.innerHTML = "";
+
+
+  spirits.forEach(sprite => {
+
+    const filteredVariants =
+      sprite.variants.filter(
+        variant =>
+          sprite.name
             .toLowerCase()
-            .includes(searchValue)
-        )
-        .forEach(spirit => {
+            .includes(search) ||
 
-          const status = getStatus(spirit.id);
+          variant[0]
+            .toLowerCase()
+            .includes(search)
+      );
 
-          const card = document.createElement("div");
 
-          card.className = "spirit-card";
+    if (
+      filteredVariants.length === 0
+    ) {
+      return;
+    }
 
-          if (status === 1) {
-            card.classList.add("status-obtenu");
-          }
 
-          if (status === 2) {
-            card.classList.add("status-maitrise");
-          }
+    const section =
+      document.createElement(
+        "section"
+      );
 
-          if (status === 3) {
-            card.classList.add("status-perdu");
-          }
+    section.className =
+      "sprite-section";
 
-          card.innerHTML = `
-            <div class="spirit-icon">
-              ${spirit.icon}
-            </div>
 
-            <div class="spirit-name">
-              ${spirit.name}
-            </div>
+    section.innerHTML = `
+      <h2>
+        ${sprite.name}
+      </h2>
 
-            <div class="status">
-              ${getStatusName(status)}
+      <div class="variants-grid"></div>
+    `;
+
+
+    const grid =
+      section.querySelector(
+        ".variants-grid"
+      );
+
+
+    filteredVariants.forEach(
+      variant => {
+
+        const variantName =
+          variant[0];
+
+        const image =
+          variant[1];
+
+        const id =
+          getId(
+            sprite.name,
+            variantName
+          );
+
+        const status =
+          getStatus(id);
+
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "variant-card";
+
+
+        if (status === 1) {
+
+          card.classList.add(
+            "status-obtenu"
+          );
+
+        }
+
+
+        if (status === 2) {
+
+          card.classList.add(
+            "status-maitrise"
+          );
+
+        }
+
+
+        if (status === 3) {
+
+          card.classList.add(
+            "status-perdu"
+          );
+
+        }
+
+
+        let imageHTML = "";
+
+
+        if (image) {
+
+          imageHTML = `
+            <img
+              class="variant-image"
+              src="${image}"
+              alt="${sprite.name} ${variantName}"
+            >
+          `;
+
+        } else {
+
+          imageHTML = `
+            <div class="fallback-image">
+              👻
             </div>
           `;
 
-          card.addEventListener(
-            "click",
-            () => clickSpirit(spirit.id)
-          );
-
-          grid.appendChild(card);
-
-        });
-
-    }
-
-    function updateStats() {
-
-      let obtained = 0;
-      let mastered = 0;
-      let lost = 0;
-
-      spirits.forEach(spirit => {
-
-        const status =
-          getStatus(spirit.id);
-
-        if (status === 1) {
-          obtained++;
         }
 
-        if (status === 2) {
-          mastered++;
-        }
 
-        if (status === 3) {
-          lost++;
-        }
+        card.innerHTML = `
 
-      });
+          ${imageHTML}
 
-      const total = spirits.length;
+          <div class="variant-name">
+            ${variantName}
+          </div>
 
-      /*
-        Le titre Maître des esprits est obtenu
-        quand TOUS les esprits sont obtenus
-        ou dans un état supérieur.
-      */
+          <div class="status">
+            ${getStatusName(status)}
+          </div>
 
-      const collected =
-        obtained +
-        mastered +
-        lost;
+        `;
 
-      const progress =
-        total === 0
-          ? 0
-          : Math.round(
-              (collected / total) * 100
-            );
 
-      document.getElementById(
-        "obtainedCount"
-      ).textContent = obtained;
-
-      document.getElementById(
-        "masteredCount"
-      ).textContent = mastered;
-
-      document.getElementById(
-        "lostCount"
-      ).textContent = lost;
-
-      document.getElementById(
-        "totalCount"
-      ).textContent = total;
-
-      document.getElementById(
-        "progressText"
-      ).textContent =
-        progress + "%";
-
-      document.getElementById(
-        "progressBar"
-      ).style.width =
-        progress + "%";
-
-      /*
-        Maître des esprits :
-        tous les esprits doivent être obtenus
-        au minimum.
-      */
-
-      if (collected === total) {
-
-        document.getElementById(
-          "masterBadge"
-        ).style.display = "block";
-
-      } else {
-
-        document.getElementById(
-          "masterBadge"
-        ).style.display = "none";
-
-      }
-
-    }
-
-    function resetCollection() {
-
-      const confirmation =
-        confirm(
-          "Es-tu sûr de vouloir réinitialiser toute ta collection ?"
+        card.addEventListener(
+          "click",
+          () =>
+            clickVariant(id)
         );
 
-      if (!confirmation) {
-        return;
+
+        grid.appendChild(card);
+
       }
+    );
 
-      collection = {};
 
-      saveCollection();
+    container.appendChild(section);
 
-      displaySpirits();
+  });
 
-      updateStats();
+}
 
-    }
 
-    function exportImage() {
+/*
+====================================================
+STATISTIQUES
+====================================================
+*/
 
-      alert(
-        "La fonction Exporter l'image sera ajoutée dans une prochaine étape."
+function updateStats() {
+
+  let total = 0;
+
+  let obtained = 0;
+
+  let mastered = 0;
+
+  let lost = 0;
+
+
+  spirits.forEach(
+    sprite => {
+
+      sprite.variants.forEach(
+        variant => {
+
+          total++;
+
+
+          const id =
+            getId(
+              sprite.name,
+              variant[0]
+            );
+
+
+          const status =
+            getStatus(id);
+
+
+          if (
+            status === 1
+          ) {
+
+            obtained++;
+
+          }
+
+
+          if (
+            status === 2
+          ) {
+
+            mastered++;
+
+          }
+
+
+          if (
+            status === 3
+          ) {
+
+            lost++;
+
+          }
+
+        }
       );
 
     }
+  );
 
-    displaySpirits();
 
-    updateStats();
+  const collected =
+    obtained +
+    mastered +
+    lost;
 
-  </script>
+
+  const progress =
+    total === 0
+      ? 0
+      : Math.round(
+          (collected / total) *
+          100
+        );
+
+
+  document.getElementById(
+    "obtainedCount"
+  ).textContent =
+    obtained;
+
+
+  document.getElementById(
+    "masteredCount"
+  ).textContent =
+    mastered;
+
+
+  document.getElementById(
+    "lostCount"
+  ).textContent =
+    lost;
+
+
+  document.getElementById(
+    "totalCount"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    collected +
+    " / " +
+    total;
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    progress +
+    "%";
+
+
+  /*
+    MAÎTRE DES ESPRITS
+
+    Tous les esprits doivent être
+    obtenus au minimum.
+  */
+
+  if (
+    collected === total
+  ) {
+
+    document.getElementById(
+      "masterBadge"
+    ).style.display =
+      "block";
+
+  } else {
+
+    document.getElementById(
+      "masterBadge"
+    ).style.display =
+      "none";
+
+  }
+
+}
+
+
+/*
+====================================================
+RÉINITIALISATION
+====================================================
+*/
+
+function resetCollection() {
+
+  const confirmation =
+    confirm(
+      "Es-tu sûr de vouloir réinitialiser toute ta collection ?"
+    );
+
+
+  if (!confirmation) {
+
+    return;
+
+  }
+
+
+  collection = {};
+
+  saveCollection();
+
+  displaySpirits();
+
+  updateStats();
+
+}
+
+
+/*
+====================================================
+EXPORT
+====================================================
+
+À faire dans la prochaine modification :
+générer une vraie image de la collection.
+*/
+
+function exportImage() {
+
+  alert(
+    "L'export d'image arrive dans la prochaine étape !"
+  );
+
+}
+
+
+/*
+====================================================
+DÉMARRAGE
+====================================================
+*/
+
+displaySpirits();
+
+updateStats();
+
+</script>
 
 </body>
 </html>
