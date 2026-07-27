@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Esprits Fortnite</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top, #1e6eff 0%, transparent 35%),
+        linear-gradient(135deg, #06132f, #071d4d 50%, #020817);
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px #4da3ff;
+    }
+
+    header p {
+      color: #bcdcff;
+      font-size: 17px;
+    }
+
+    .top-panel {
+      max-width: 1100px;
+      margin: 0 auto 25px;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(7, 29, 77, 0.75);
+      border: 1px solid rgba(100, 180, 255, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .stat-label {
+      color: #a9cfff;
+      font-size: 14px;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 14px;
+      background: #07152e;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00aaff, #00eaff);
+      transition: width 0.3s;
+    }
+
+    #masterBadge {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 210, 0, 0.15);
+      border: 1px solid #ffd000;
+      color: #ffe46b;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: white;
+      background: #1265d8;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: #1978f5;
+    }
+
+    .search-container {
+      max-width: 1100px;
+      margin: 0 auto 20px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(100, 180, 255, 0.3);
+      background: rgba(4, 17, 42, 0.85);
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    #search::placeholder {
+      color: #8caed8;
+    }
+
+    .spirits-grid {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    .spirit-card {
+      position: relative;
+      min-height: 180px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(8, 32, 78, 0.8);
+      border: 2px solid rgba(100, 180, 255, 0.15);
+      cursor: pointer;
+      user-select: none;
+      transition: 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .spirit-card:hover {
+      transform: translateY(-5px);
+      border-color: #3296ff;
+      box-shadow: 0 10px 30px rgba(0, 130, 255, 0.25);
+    }
+
+    .spirit-icon {
+      font-size: 55px;
+      margin-bottom: 12px;
+    }
+
+    .spirit-name {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* Obtenu */
+    .status-obtenu {
+      border-color: #20d66b;
+      background: rgba(20, 130, 70, 0.25);
+    }
+
+    .status-obtenu .status {
+      color: #43f58b;
+    }
+
+    /* Maîtrisé */
+    .status-maitrise {
+      border-color: #ffd000;
+      background: rgba(150, 115, 0, 0.25);
+    }
+
+    .status-maitrise .status {
+      color: #ffe04d;
+    }
+
+    /* Perdu */
+    .status-perdu {
+      border-color: #ff4040;
+      background: rgba(150, 20, 20, 0.25);
+    }
+
+    .status-perdu .status {
+      color: #ff6868;
+    }
+
+    .legend {
+      max-width: 1100px;
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      color: #bcdcff;
+      font-size: 14px;
+    }
+
+    .legend span {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(5, 20, 50, 0.6);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 10px 20px;
+      color: #7192bd;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 30px;
+      }
+
+      body {
+        padding: 10px;
+      }
+
+      .spirits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .spirit-card {
+        min-height: 150px;
+        padding: 12px;
+      }
+
+      .spirit-icon {
+        font-size: 42px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>👻 Esprits Fortnite</h1>
+    <p>Collectionne, maîtrise et suis tous tes esprits.</p>
+  </header>
+
+  <section class="top-panel">
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-number" id="obtainedCount">0</div>
+        <div class="stat-label">Esprits obtenus</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="masteredCount">0</div>
+        <div class="stat-label">Esprits maîtrisés</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="lostCount">0</div>
+        <div class="stat-label">Esprits perdus</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-label">Total</div>
+      </div>
+
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <p style="text-align:center; color:#bcdcff;">
+      Progression : <span id="progressText">0%</span>
+    </p>
+
+    <div id="masterBadge">
+      👑 MAÎTRE DES ESPRITS — Tu as obtenu tous les esprits !
+    </div>
+
+    <div class="actions">
+      <button onclick="exportImage()">
+        📸 Exporter l'image
+      </button>
+
+      <button onclick="resetCollection()">
+        🔄 Réinitialiser
+      </button>
+    </div>
+
+  </section>
+
+  <div class="search-container">
+    <input
+      type="text"
+      id="search"
+      placeholder="🔎 Rechercher un esprit..."
+      oninput="displaySpirits()"
+    >
+  </div>
+
+  <div class="legend">
+    <span>⚪ Non obtenu</span>
+    <span>🟢 Obtenu</span>
+    <span>🟡 Maîtrisé</span>
+    <span>🔴 Perdu</span>
+  </div>
+
+  <main class="spirits-grid" id="spiritsGrid"></main>
+
+  <footer>
+    Esprits Fortnite — Collection Tracker
+  </footer>
+
+  <script>
+
+    /*
+      POUR L'INSTANT :
+      Ce sont des esprits de test.
+      On remplacera cette liste par les vrais esprits plus tard.
+    */
+
+    const spirits = [
+      { id: 1, name: "Esprit Flamme", icon: "🔥" },
+      { id: 2, name: "Esprit Glace", icon: "❄️" },
+      { id: 3, name: "Esprit Foudre", icon: "⚡" },
+      { id: 4, name: "Esprit Ombre", icon: "🌑" },
+      { id: 5, name: "Esprit Lumière", icon: "✨" },
+      { id: 6, name: "Esprit Nature", icon: "🌿" },
+      { id: 7, name: "Esprit Galaxie", icon: "🌌" },
+      { id: 8, name: "Esprit Or", icon: "🏆" },
+      { id: 9, name: "Esprit Cristal", icon: "💎" },
+      { id: 10, name: "Esprit Cube", icon: "🟪" },
+      { id: 11, name: "Esprit Quack", icon: "🦆" },
+      { id: 12, name: "Esprit Gélifié", icon: "🫧" }
+    ];
+
+    /*
+      0 = Non obtenu
+      1 = Obtenu
+      2 = Maîtrisé
+      3 = Perdu
+    */
+
+    let collection = JSON.parse(
+      localStorage.getItem("espritsCollection")
+    ) || {};
+
+    function saveCollection() {
+      localStorage.setItem(
+        "espritsCollection",
+        JSON.stringify(collection)
+      );
+    }
+
+    function getStatus(id) {
+      return collection[id] || 0;
+    }
+
+    function getStatusName(status) {
+
+      if (status === 1) return "🟢 Obtenu";
+
+      if (status === 2) return "🟡 Maîtrisé";
+
+      if (status === 3) return "🔴 Perdu";
+
+      return "⚪ Non obtenu";
+    }
+
+    function clickSpirit(id) {
+
+      let currentStatus = getStatus(id);
+
+      /*
+        Cycle :
+        Non obtenu → Obtenu
+        Obtenu → Maîtrisé
+        Maîtrisé → Perdu
+        Perdu → Non obtenu
+      */
+
+      currentStatus++;
+
+      if (currentStatus > 3) {
+        currentStatus = 0;
+      }
+
+      collection[id] = currentStatus;
+
+      saveCollection();
+
+      displaySpirits();
+      updateStats();
+    }
+
+    function displaySpirits() {
+
+      const grid = document.getElementById("spiritsGrid");
+
+      const searchValue =
+        document
+          .getElementById("search")
+          .value
+          .toLowerCase();
+
+      grid.innerHTML = "";
+
+      spirits
+        .filter(spirit =>
+          spirit.name
+            .toLowerCase()
+            .includes(searchValue)
+        )
+        .forEach(spirit => {
+
+          const status = getStatus(spirit.id);
+
+          const card = document.createElement("div");
+
+          card.className = "spirit-card";
+
+          if (status === 1) {
+            card.classList.add("status-obtenu");
+          }
+
+          if (status === 2) {
+            card.classList.add("status-maitrise");
+          }
+
+          if (status === 3) {
+            card.classList.add("status-perdu");
+          }
+
+          card.innerHTML = `
+            <div class="spirit-icon">
+              ${spirit.icon}
+            </div>
+
+            <div class="spirit-name">
+              ${spirit.name}
+            </div>
+
+            <div class="status">
+              ${getStatusName(status)}
+            </div>
+          `;
+
+          card.addEventListener(
+            "click",
+            () => clickSpirit(spirit.id)
+          );
+
+          grid.appendChild(card);
+
+        });
+
+    }
+
+    function updateStats() {
+
+      let obtained = 0;
+      let mastered = 0;
+      let lost = 0;
+
+      spirits.forEach(spirit => {
+
+        const status =
+          getStatus(spirit.id);
+
+        if (status === 1) {
+          obtained++;
+        }
+
+        if (status === 2) {
+          mastered++;
+        }
+
+        if (status === 3) {
+          lost++;
+        }
+
+      });
+
+      const total = spirits.length;
+
+      /*
+        Le titre Maître des esprits est obtenu
+        quand TOUS les esprits sont obtenus
+        ou dans un état supérieur.
+      */
+
+      const collected =
+        obtained +
+        mastered +
+        lost;
+
+      const progress =
+        total === 0
+          ? 0
+          : Math.round(
+              (collected / total) * 100
+            );
+
+      document.getElementById(
+        "obtainedCount"
+      ).textContent = obtained;
+
+      document.getElementById(
+        "masteredCount"
+      ).textContent = mastered;
+
+      document.getElementById(
+        "lostCount"
+      ).textContent = lost;
+
+      document.getElementById(
+        "totalCount"
+      ).textContent = total;
+
+      document.getElementById(
+        "progressText"
+      ).textContent =
+        progress + "%";
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        progress + "%";
+
+      /*
+        Maître des esprits :
+        tous les esprits doivent être obtenus
+        au minimum.
+      */
+
+      if (collected === total) {
+
+        document.getElementById(
+          "masterBadge"
+        ).style.display = "block";
+
+      } else {
+
+        document.getElementById(
+          "masterBadge"
+        ).style.display = "none";
+
+      }
+
+    }
+
+    function resetCollection() {
+
+      const confirmation =
+        confirm(
+          "Es-tu sûr de vouloir réinitialiser toute ta collection ?"
+        );
+
+      if (!confirmation) {
+        return;
+      }
+
+      collection = {};
+
+      saveCollection();
+
+      displaySpirits();
+
+      updateStats();
+
+    }
+
+    function exportImage() {
+
+      alert(
+        "La fonction Exporter l'image sera ajoutée dans une prochaine étape."
+      );
+
+    }
+
+    displaySpirits();
+
+    updateStats();
+
+  </script>
+
+</body>
+</html>
