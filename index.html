@@ -1957,7 +1957,9 @@ async function exportImage() {
 
 
           let text =
-            "—";
+  row.variants[variantName] === undefined
+    ? ""
+    : "—";
           let color = "#334155"; // Gris discret pour les cases vides
 
 
