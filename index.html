@@ -584,7 +584,7 @@ tr:hover {
         <tr>
           <td>Banane</td>
           <td>Légendaire</td>
-          <td>Marque les variantes rares de sprites et les ennemis qui les portent dans un rayon de 40 m, jusqu’à 80 m au niveau maximum — mais révèle aussi votre position.</td>
+          <td>Marque les variantes rares de sprites et les ennemis qui les portent dans un rayon de 40 m, jusqu'à 80 m au niveau maximum — mais révèle aussi votre position.</td>
           <td>Les hauteurs — les zones montagneuses de la carte.</td>
           <td>Normal, Or, Gélifié, Galaxie, Holofoil</td>
         </tr>
@@ -592,7 +592,7 @@ tr:hover {
         <tr>
           <td>Lama</td>
           <td>Légendaire</td>
-          <td>Chance d’améliorer votre arme en ouvrant une caisse de munitions, croissante à chaque niveau : 5 %, 10 %, 15 %, 17 % puis 20 %.</td>
+          <td>Chance d'améliorer votre arme en ouvrant une caisse de munitions, croissante à chaque niveau : 5 %, 10 %, 15 %, 17 % puis 20 %.</td>
           <td>Coffres de Reliques, ainsi que coffres à Sprites et coffres rares autour de Golden Grove et Calamari Canyon.</td>
           <td>Normal, Or, Gélifié, Galaxie, Gemme</td>
         </tr>
@@ -649,15 +649,15 @@ tr:hover {
         <tr>
           <td>John Wick</td>
           <td>Mythique</td>
-          <td>Révèle les ennemis proches pendant 3 secondes après que vous mettez à terre ou éliminez un joueur, jusqu’à 5 secondes au niveau maximum.</td>
-          <td>La carte Rechargement des Simpson à Springfield — Coffres de Reliques et coffres à Sprites, l’Extracteur portable, un porteur que vous éliminez, ou une victoire. Débloquez-le là-bas et il vous suit en Battle Royale.</td>
+          <td>Révèle les ennemis proches pendant 3 secondes après que vous mettez à terre ou éliminez un joueur, jusqu'à 5 secondes au niveau maximum.</td>
+          <td>La carte Rechargement des Simpson à Springfield — Coffres de Reliques et coffres à Sprites, l'Extracteur portable, un porteur que vous éliminez, ou une victoire. Débloquez-l[...]
           <td>Normal uniquement</td>
         </tr>
 
         <tr>
           <td>IronMouse</td>
           <td>Mythique</td>
-          <td>Régénère de la santé quand vous êtes bas — 60 de base, jusqu’à 100 au niveau maximum — et vous rend invisible avec une gravité réduite pendant les soins.</td>
+          <td>Régénère de la santé quand vous êtes bas — 60 de base, jusqu'à 100 au niveau maximum — et vous rend invisible avec une gravité réduite pendant les soins.</td>
           <td>Coffres de Reliques. Un Localisateur de Sprites améliore vos chances de trouver un mythique.</td>
           <td>Normal uniquement</td>
         </tr>
@@ -1321,7 +1321,6 @@ function updateStats() {
 
           total++;
 
-
           const id =
             getId(
               sprite.name,
@@ -1554,8 +1553,10 @@ async function exportImage() {
     columnWidths.reduce(
 
       (
+
         sum,
         width
+
       ) =>
 
         sum +
@@ -1601,7 +1602,9 @@ async function exportImage() {
 
 
           row.variants[
+
             variantName
+
           ] =
 
             getStatus(id);
@@ -1631,6 +1634,7 @@ async function exportImage() {
     +
 
     rows.length *
+
     rowHeight;
 
 
@@ -1646,247 +1650,76 @@ async function exportImage() {
     scale;
 
 
-  ctx.scale(
-    scale,
-    scale
-  );
-
-
-  /*
-  FOND
-  */
-
-  const gradient =
-
-    ctx.createLinearGradient(
-
-      0,
-
-      0,
-
-      totalWidth,
-
-      totalHeight
-
-    );
-
-
-  gradient.addColorStop(
-
-    0,
-
-    "#06132f"
-
-  );
-
-
-  gradient.addColorStop(
-
-    0.5,
-
-    "#071d4d"
-
-  );
-
-
-  gradient.addColorStop(
-
-    1,
-
-    "#020817"
-
-  );
-
+  ctx.scale(scale, scale);
 
   ctx.fillStyle =
-    gradient;
-
+    "#06132f";
 
   ctx.fillRect(
-
     0,
-
     0,
-
     totalWidth,
-
     totalHeight
-
   );
 
 
-  /*
-  TITRE
-  */
+  ctx.fillStyle = "#1e6eff";
 
-  ctx.fillStyle =
-    "#ffffff";
-
-
-  ctx.font =
-    "bold 34px Arial";
+  ctx.fillRect(
+    0,
+    0,
+    totalWidth,
+    titleHeight + padding
+  );
 
 
-  ctx.textAlign =
-    "left";
+  ctx.fillStyle = "white";
 
+  ctx.font = "bold 36px Arial";
+
+  ctx.textAlign = "center";
 
   ctx.fillText(
+    "Esprits Fortnite",
+    totalWidth / 2,
+    padding + 40
+  );
 
-    "👻 Ma collection d'esprits Fortnite",
 
+  ctx.fillStyle = "#bcdcff";
+
+  ctx.font = "16px Arial";
+
+  let yOffset = padding + titleHeight;
+
+
+  ctx.fillStyle = "#1265d8";
+
+  ctx.fillRect(
     padding,
-
-    padding + 45
-
+    yOffset,
+    totalWidth - padding * 2,
+    rowHeight
   );
 
 
-  /*
-  PROGRESSION
-  */
+  ctx.fillStyle = "white";
 
-  let total = 0;
+  ctx.font = "bold 14px Arial";
 
-  let collected = 0;
-
-
-  spirits.forEach(
-    sprite => {
-
-      sprite.variants.forEach(
-        variant => {
-
-          total++;
-
-
-          const id =
-            getId(
-              sprite.name,
-              variant[0]
-            );
-
-
-          if (
-            getStatus(id) !== 0
-          ) {
-
-            collected++;
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  ctx.font =
-    "18px Arial";
-
-
-  ctx.fillStyle =
-    "#bcdcff";
-
-
-  ctx.fillText(
-
-    `Progression : ${collected} / ${total}`,
-
-    padding,
-
-    padding + 75
-
-  );
-
-
-  /*
-  TABLEAU
-  */
-
-  const tableY =
-
-    padding +
-    titleHeight;
-
-
-  let currentX =
-    padding;
-
-
-  /*
-  EN-TÊTES
-  */
+  let xOffset = padding + 10;
 
   columns.forEach(
 
-    (
-      column,
-      index
-    ) => {
-
-      ctx.fillStyle =
-        "#1265d8";
-
-
-      ctx.fillRect(
-
-        currentX,
-
-        tableY,
-
-        columnWidths[index],
-
-        rowHeight
-
-      );
-
-
-      ctx.strokeStyle =
-        "#4da3ff";
-
-
-      ctx.strokeRect(
-
-        currentX,
-
-        tableY,
-
-        columnWidths[index],
-
-        rowHeight
-
-      );
-
-
-      ctx.fillStyle =
-        "#ffffff";
-
-
-      ctx.font =
-        "bold 16px Arial";
-
-
-      ctx.textAlign =
-        "center";
-
+    (column, index) => {
 
       ctx.fillText(
-
         column,
-
-        currentX +
-
-        columnWidths[index] / 2,
-
-        tableY + 43
-
+        xOffset + columnWidths[index] / 2,
+        yOffset + rowHeight / 2 + 5
       );
 
-
-      currentX +=
-
+      xOffset +=
         columnWidths[index];
 
     }
@@ -1894,298 +1727,133 @@ async function exportImage() {
   );
 
 
-  /*
-  LIGNES
-  */
+  yOffset += rowHeight;
+
 
   rows.forEach(
 
-    (
-      row,
-      rowIndex
-    ) => {
+    (row, index) => {
 
-      const y =
+      if (index % 2 === 0) {
 
-        tableY +
+        ctx.fillStyle =
+          "rgba(8, 32, 78, 0.8)";
 
-        rowHeight +
+      } else {
 
-        rowIndex *
-        rowHeight;
+        ctx.fillStyle =
+          "rgba(20, 60, 120, 0.6)";
 
-
-      let x =
-        padding;
-
-
-      /*
-      NOM DU SPRITE
-      */
-
-      ctx.fillStyle =
-
-        rowIndex % 2 === 0
-
-          ? "#0b2857"
-
-          : "#082044";
-
+      }
 
       ctx.fillRect(
-
-        x,
-
-        y,
-
-        columnWidths[0],
-
+        padding,
+        yOffset,
+        totalWidth - padding * 2,
         rowHeight
-
       );
 
 
-      ctx.strokeStyle =
-        "#315b8f";
+      ctx.fillStyle = "#d9edff";
 
+      ctx.font = "14px Arial";
 
-      ctx.strokeRect(
-
-        x,
-
-        y,
-
-        columnWidths[0],
-
-        rowHeight
-
-      );
-
-
-      ctx.fillStyle =
-        "#f8fafc";
-
-
-      ctx.font =
-        "bold 15px Arial";
-
-
-      ctx.textAlign =
-        "center";
-
+      ctx.textAlign = "left";
 
       ctx.fillText(
-
         row.name,
-
-        x +
-
-        columnWidths[0] / 2,
-
-        y + 42
-
+        padding + 10,
+        yOffset + rowHeight / 2 + 5
       );
 
 
-      x +=
-        columnWidths[0];
+      xOffset =
+        padding +
+        columnWidths[0] +
+        10;
 
+      columns.slice(1).forEach(
 
-      /*
-      VARIANTES
-      */
-
-      const variantNames = [
-
-        "Normal",
-
-        "Or",
-
-        "Gélifié",
-
-        "Galaxie",
-
-        "Holofoil",
-
-        "Cube"
-
-      ];
-
-
-      variantNames.forEach(
-
-        (
-          variantName,
-          variantIndex
-        ) => {
+        (column, colIndex) => {
 
           const status =
+            row.variants[column];
 
-            row.variants[
-              variantName
-            ];
-
-
-          let background =
-            "#0f172a";
-
-
-          let text =
-  row.variants[variantName] === undefined
-    ? ""
-    : "—";
-          let color = "#334155"; // Gris discret pour les cases vides
-
-
-          if (
+          const statusText =
             status === 1
-          ) {
+              ? "✓"
+              : status === 2
+                ? "★"
+                : status === 3
+                  ? "✗"
+                  : "";
 
-            background =
-              "#10b981";
-
-            text =
-              "✓";
-
-          }
-
-
-          if (
-            status === 2
-          ) {
-
-            background =
-              "#fbbf24";
-
-            text =
-              "★";
-
-          }
-
-
-          if (
-            status === 3
-          ) {
-
-            background =
-              "#dc2626";
-
-            text =
-              "✕";
-
-          }
-
-
-          const width =
-
-            columnWidths[
-              variantIndex + 1
-            ];
-
-
-          ctx.fillStyle =
-            background;
-
-
-          ctx.fillRect(
-
-            x,
-
-            y,
-
-            width,
-
-            rowHeight
-
-          );
-
-
-          ctx.strokeStyle =
-            "#315b8f";
-
-
-          ctx.strokeRect(
-
-            x,
-
-            y,
-
-            width,
-
-            rowHeight
-
-          );
-
-
-          ctx.fillStyle =
-            "#ffffff";
-
-
-          ctx.font =
-            "bold 26px Arial";
-
-
-          ctx.textAlign =
-            "center";
-
+          ctx.textAlign = "center";
 
           ctx.fillText(
-
-            text,
-
-            x +
-            width / 2,
-
-            y + 45
-
+            statusText,
+            xOffset +
+              columnWidths[
+                colIndex + 1
+              ] /
+              2,
+            yOffset +
+              rowHeight /
+              2 +
+              5
           );
 
-
-          x +=
-            width;
+          xOffset +=
+            columnWidths[
+              colIndex + 1
+            ];
 
         }
 
       );
+
+
+      yOffset += rowHeight;
 
     }
 
   );
 
 
-  /*
-  TÉLÉCHARGEMENT
-  */
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#bcdcff";
+  ctx.font = "bold 16px Arial";
+  ctx.fillText(
+    "Esprits Fortnite — Collection Tracker",
+    totalWidth / 2,
+    totalHeight - 45
+  );
+
+  ctx.font = "14px Arial";
+  ctx.fillText(
+    "Allez sur https://drolfoam.github.io/esprits-fortnite-tracker/",
+    totalWidth / 2,
+    totalHeight - 20
+  );
+
 
   const link =
-
     document.createElement(
       "a"
     );
 
-
-  link.download =
-
-    "ma-collection-esprits.png";
-
-
   link.href =
-
     canvas.toDataURL(
       "image/png"
     );
 
+  link.download =
+    "esprits-collection.png";
 
   link.click();
 
 }
 
-
-/*
-====================================================
-DÉMARRAGE
-====================================================
-*/
 
 displaySpirits();
 
