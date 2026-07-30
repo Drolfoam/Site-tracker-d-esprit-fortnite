@@ -1222,9 +1222,34 @@ function displaySpirits() {
           }
 
 
-          let imageHTML = ""; if (image) { imageHTML = ` <div class="image-container"> <img class="variant-image" src="${image}" alt="${sprite.name} ${variantName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" > <div class="fallback-image error-image"> <span>👻</span> <small>Le chargement de l'image a échoué</small> </div> </div> `; } else { imageHTML = ` <div class="fallback-image error-image"> <span>👻</span> <small>Image indisponible</small> </div> `; }
+          if (image) {
 
+  imageHTML = `
 
+    <img
+      class="variant-image"
+      src="${image}"
+      alt="${sprite.name} ${variantName}"
+    >
+
+  `;
+
+}
+
+else {
+
+  imageHTML = `
+
+    <div
+      class="fallback-image"
+    >
+      👻
+    </div>
+
+  `;
+
+}
+          
           card.innerHTML = `
 
             ${imageHTML}
