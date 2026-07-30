@@ -466,7 +466,7 @@ tr:hover {
           <td>Rare</td>
           <td>Régénère les boucliers pour toi et les alliés proches quand tu es dans l'eau.</td>
           <td>Apparaît près de l'eau : lacs, rivières et côtes.</td>
-          <td>Normal, Or, Gélifié, Galaxie, Holofoil</td>
+          <td>Normal, Or, Gélifié, Galaxie, Holofoil, Quack</td>
         </tr>
 
         <tr>
@@ -474,7 +474,7 @@ tr:hover {
           <td>Rare</td>
           <td>Donne une chance d'obtenir des objets plus rares dans les coffres.</td>
           <td>Présent dans les zones de forêts et boisées.</td>
-          <td>Normal, Or, Gélifié, Galaxie, Cube</td>
+          <td>Normal, Or, Gélifié, Galaxie, Cube, Quack</td>
         </tr>
 
         <tr>
@@ -482,7 +482,7 @@ tr:hover {
           <td>Rare</td>
           <td>Déclenche une explosion de feu après avoir infligé assez de dégâts.</td>
           <td>Présent dans les lieux urbains et zones construites.</td>
-          <td>Normal, Or, Gélifié, Galaxie, Holofoil, Cube</td>
+          <td>Normal, Or, Gélifié, Galaxie, Holofoil, Cube, Quack</td>
         </tr>
 
         <tr>
@@ -581,6 +581,23 @@ tr:hover {
   <td>Normal, Or, Gélifié, Galaxie, Holofoil</td>
 </tr>
 
+        <tr>
+          <td>Banane</td>
+          <td>Légendaire</td>
+          <td>Marque les variantes rares de sprites et les ennemis qui les portent dans un rayon de 40 m, jusqu’à 80 m au niveau maximum — mais révèle aussi votre position.</td>
+          <td>Les hauteurs — les zones montagneuses de la carte.</td>
+          <td>Normal, Or, Gélifié, Galaxie, Holofoil</td>
+        </tr>
+
+        <tr>
+          <td>Lama</td>
+          <td>Légendaire</td>
+          <td>Chance d’améliorer votre arme en ouvrant une caisse de munitions, croissante à chaque niveau : 5 %, 10 %, 15 %, 17 % puis 20 %.</td>
+          <td>Coffres de Reliques, ainsi que coffres à Sprites et coffres rares autour de Golden Grove et Calamari Canyon.</td>
+          <td>Normal, Or, Gélifié, Galaxie, Gemme</td>
+        </tr>
+            
+
 <tr>
   <td>Batman</td>
   <td>Mythique</td>
@@ -594,7 +611,7 @@ tr:hover {
   <td>Mythique</td>
   <td>Marque les joueurs qui t'infligent des dégâts et révèle leur position sur la carte.</td>
   <td>Dans les coffres sur toute la carte.</td>
-  <td>Normal, Or, Gélifié, Galaxie, Cube</td>
+  <td>Normal, Or, Gélifié, Galaxie, Holofoil, Cube</td>
 </tr>
 
 <tr>
@@ -602,7 +619,7 @@ tr:hover {
   <td>Mythique</td>
   <td>Fait apparaître une Bulle de Bouclier Jr quand tu te soignes.</td>
   <td>Dans les coffres de sprites avec coffre-fort ou carte-clé, les plus rares.</td>
-  <td>Normal, Or, Gélifié, Galaxie</td>
+  <td>Normal, Or, Gélifié, Galaxie, Holofoil, Cube, Quack</td>
 </tr>
 
 <tr>
@@ -628,6 +645,22 @@ tr:hover {
   <td>Dans les coffres de sprites et les coffres rares (meilleures chances dans les coffres de sprites).</td>
   <td>Normal uniquement</td>
 </tr>
+
+        <tr>
+          <td>John Wick</td>
+          <td>Mythique</td>
+          <td>Révèle les ennemis proches pendant 3 secondes après que vous mettez à terre ou éliminez un joueur, jusqu’à 5 secondes au niveau maximum.</td>
+          <td>La carte Rechargement des Simpson à Springfield — Coffres de Reliques et coffres à Sprites, l’Extracteur portable, un porteur que vous éliminez, ou une victoire. Débloquez-le là-bas et il vous suit en Battle Royale.</td>
+          <td>Normal uniquement</td>
+        </tr>
+
+        <tr>
+          <td>IronMouse</td>
+          <td>Mythique</td>
+          <td>Régénère de la santé quand vous êtes bas — 60 de base, jusqu’à 100 au niveau maximum — et vous rend invisible avec une gravité réduite pendant les soins.</td>
+          <td>Coffres de Reliques. Un Localisateur de Sprites améliore vos chances de trouver un mythique.</td>
+          <td>Normal uniquement</td>
+        </tr>
 
       </tbody>
 
@@ -659,6 +692,7 @@ const spirits = [
       ["Gélifié", "water_candy.webp"],
       ["Galaxie", "water_galaxy.webp"],
       ["Holofoil", "water_holofoil.webp"]
+      ["Quack", ""]
     ]
   },
 
@@ -670,6 +704,7 @@ const spirits = [
       ["Gélifié", "earth_candy.webp"],
       ["Galaxie", "earth_galaxy.webp"],
       ["Cube", "earth_cube.webp"]
+      ["Quack", ""]
     ]
   },
 
@@ -682,6 +717,7 @@ const spirits = [
       ["Galaxie", "fire_galaxy.webp"],
       ["Holofoil", "fire_holofoil.webp"],
       ["Cube", "fire_cube.webp"]
+      ["Quack", ""]
     ]
   },
 
@@ -814,6 +850,29 @@ const spirits = [
   ]
 },
 
+  {
+    name: "Banane",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Holofoil", ""],
+    ]
+  },
+
+  {
+    name: "Lama",
+    variants: [
+      ["Normal", ""],
+      ["Or", ""],
+      ["Gélifié", ""],
+      ["Galaxie", ""],
+      ["Gemme", ""],
+    ]
+  },
+          
+
 {
   name: "Batman",
   variants: [
@@ -866,6 +925,20 @@ const spirits = [
   variants: [
     ["Normal", "companystargazer_basic.webp"]
   ]
+},
+
+  {
+    name: "John Wick"
+      variants: [
+     ["Normal", ""]
+  ]
+},
+
+{
+  name: "IronMouse"
+  variants: [
+    ["Normal", ""],
+    ]
 },
     
     ];
