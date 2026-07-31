@@ -1491,14 +1491,10 @@ EXPORTER LA COLLECTION EN IMAGE
 async function exportImage() {
 
   const canvas =
-    document.createElement(
-      "canvas"
-    );
+    document.createElement("canvas");
 
   const ctx =
-    canvas.getContext(
-      "2d"
-    );
+    canvas.getContext("2d");
 
 
   const scale = 2;
@@ -1509,71 +1505,61 @@ async function exportImage() {
 
   const rowHeight = 70;
 
+  const footerHeight = 110;
+
+
+  /*
+  ====================================================
+  COLONNES DE L'EXPORT
+  ====================================================
+  */
 
   const columns = [
-
     "Sprite",
-
     "Normal",
-
     "Or",
-
     "Gélifié",
-
     "Galaxie",
-
-    "Gemme",
-
     "Holofoil",
-
     "Cube",
-
+    "Gemme",
     "Quack"
-
   ];
 
 
   const columnWidths = [
-
-    180,
-
-    120,
-
-    120,
-
-    120,
-
-    120,
-
-    120,
-
-    120
-
+    220,
+    140,
+    140,
+    140,
+    140,
+    140,
+    140,
+    140,
+    140
   ];
 
 
+  /*
+  ====================================================
+  LARGEUR TOTALE
+  ====================================================
+  */
+
   const totalWidth =
-
     columnWidths.reduce(
-
-      (
-
-        sum,
-        width
-
-      ) =>
-
-        sum +
-        width,
-
+      (sum, width) =>
+        sum + width,
       0
-
-    )
-
-    +
-
+    ) +
     padding * 2;
 
+
+  /*
+  ====================================================
+  PRÉPARATION DES LIGNES
+  ====================================================
+  */
 
   const rows = [];
 
@@ -1606,11 +1592,8 @@ async function exportImage() {
 
 
           row.variants[
-
             variantName
-
           ] =
-
             getStatus(id);
 
         }
@@ -1623,41 +1606,77 @@ async function exportImage() {
   );
 
 
+  /*
+  ====================================================
+  HAUTEUR TOTALE
+  ====================================================
+  */
+
   const totalHeight =
-
     padding * 2
-
     +
-
     titleHeight
-
     +
-
     rowHeight
-
     +
-
     rows.length *
-
-    rowHeight;
+    rowHeight
+    +
+    footerHeight;
 
 
   canvas.width =
-
     totalWidth *
     scale;
 
 
   canvas.height =
-
     totalHeight *
     scale;
 
 
-  ctx.scale(scale, scale);
+  ctx.scale(
+    scale,
+    scale
+  );
+
+
+  /*
+  ====================================================
+  FOND
+  ====================================================
+  */
+
+  const gradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      totalWidth,
+      totalHeight
+    );
+
+
+  gradient.addColorStop(
+    0,
+    "#06132f"
+  );
+
+
+  gradient.addColorStop(
+    0.5,
+    "#071d4d"
+  );
+
+
+  gradient.addColorStop(
+    1,
+    "#020817"
+  );
+
 
   ctx.fillStyle =
-    "#06132f";
+    gradient;
+
 
   ctx.fillRect(
     0,
@@ -1667,192 +1686,511 @@ async function exportImage() {
   );
 
 
-  ctx.fillStyle = "#1e6eff";
+  /*
+  ====================================================
+  TITRE
+  ====================================================
+  */
 
-  ctx.fillRect(
-    0,
-    0,
-    totalWidth,
-    titleHeight + padding
-  );
+  ctx.fillStyle =
+    "#ffffff";
 
 
-  ctx.fillStyle = "white";
+  ctx.font =
+    "bold 34px Arial";
 
-  ctx.font = "bold 36px Arial";
 
-  ctx.textAlign = "center";
+  ctx.textAlign =
+    "left";
+
 
   ctx.fillText(
-    "Esprits Fortnite",
-    totalWidth / 2,
-    padding + 40
-  );
-
-
-  ctx.fillStyle = "#bcdcff";
-
-  ctx.font = "16px Arial";
-
-  let yOffset = padding + titleHeight;
-
-
-  ctx.fillStyle = "#1265d8";
-
-  ctx.fillRect(
+    "👻 Ma collection d'esprits Fortnite",
     padding,
-    yOffset,
-    totalWidth - padding * 2,
-    rowHeight
+    padding + 45
   );
 
 
-  ctx.fillStyle = "white";
+  /*
+  ====================================================
+  PROGRESSION
+  ====================================================
+  */
 
-  ctx.font = "bold 14px Arial";
+  let total = 0;
 
-  let xOffset = padding + 10;
+  let collected = 0;
+
+
+  spirits.forEach(
+    sprite => {
+
+      sprite.variants.forEach(
+        variant => {
+
+          total++;
+
+
+          const id =
+            getId(
+              sprite.name,
+              variant[0]
+            );
+
+
+          if (
+            getStatus(id) !== 0
+          ) {
+
+            collected++;
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  ctx.font =
+    "18px Arial";
+
+
+  ctx.fillStyle =
+    "#bcdcff";
+
+
+  ctx.fillText(
+    `Progression : ${collected} / ${total}`,
+    padding,
+    padding + 75
+  );
+
+
+  /*
+  ====================================================
+  TABLEAU
+  ====================================================
+  */
+
+  const tableY =
+    padding +
+    titleHeight;
+
+
+  /*
+  ====================================================
+  EN-TÊTES
+  ====================================================
+  */
+
+  let xOffset =
+    padding;
+
 
   columns.forEach(
+    (
+      column,
+      index
+    ) => {
 
-    (column, index) => {
+      ctx.fillStyle =
+        "#1265d8";
+
+
+      ctx.fillRect(
+        xOffset,
+        tableY,
+        columnWidths[index],
+        rowHeight
+      );
+
+
+      ctx.strokeStyle =
+        "#4da3ff";
+
+
+      ctx.strokeRect(
+        xOffset,
+        tableY,
+        columnWidths[index],
+        rowHeight
+      );
+
+
+      ctx.fillStyle =
+        "#ffffff";
+
+
+      ctx.font =
+        "bold 16px Arial";
+
+
+      ctx.textAlign =
+        "center";
+
 
       ctx.fillText(
         column,
-        xOffset + columnWidths[index] / 2,
-        yOffset + rowHeight / 2 + 5
+        xOffset +
+          columnWidths[index] / 2,
+        tableY +
+          rowHeight / 2 +
+          6
       );
+
 
       xOffset +=
         columnWidths[index];
 
     }
-
   );
 
 
-  yOffset += rowHeight;
-
+  /*
+  ====================================================
+  LIGNES
+  ====================================================
+  */
 
   rows.forEach(
+    (
+      row,
+      rowIndex
+    ) => {
 
-    (row, index) => {
+      const yOffset =
+        tableY +
+        rowHeight +
+        rowIndex *
+        rowHeight;
 
-      if (index % 2 === 0) {
 
-        ctx.fillStyle =
-          "rgba(8, 32, 78, 0.8)";
+      /*
+      ================================================
+      NOM DE L'ESPRIT
+      ================================================
+      */
 
-      } else {
+      let xOffset =
+        padding;
 
-        ctx.fillStyle =
-          "rgba(20, 60, 120, 0.6)";
 
-      }
+      const nameBackground =
+        rowIndex % 2 === 0
+          ? "#0b2857"
+          : "#082044";
+
+
+      ctx.fillStyle =
+        nameBackground;
+
 
       ctx.fillRect(
-        padding,
+        xOffset,
         yOffset,
-        totalWidth - padding * 2,
+        columnWidths[0],
         rowHeight
       );
 
 
-      ctx.fillStyle = "#d9edff";
+      ctx.strokeStyle =
+        "#315b8f";
 
-      ctx.font = "14px Arial";
 
-      ctx.textAlign = "left";
+      ctx.strokeRect(
+        xOffset,
+        yOffset,
+        columnWidths[0],
+        rowHeight
+      );
+
+
+      ctx.fillStyle =
+        "#f8fafc";
+
+
+      ctx.font =
+        "bold 15px Arial";
+
+
+      ctx.textAlign =
+        "center";
+
 
       ctx.fillText(
         row.name,
-        padding + 10,
-        yOffset + rowHeight / 2 + 5
+        xOffset +
+          columnWidths[0] / 2,
+        yOffset +
+          rowHeight / 2 +
+          5
       );
 
 
-      xOffset =
-        padding +
-        columnWidths[0] +
-        10;
+      xOffset +=
+        columnWidths[0];
 
-      columns.slice(1).forEach(
 
-        (column, colIndex) => {
+      /*
+      ================================================
+      VARIANTES
+      ================================================
+      */
 
-          const status =
-            row.variants[column];
+      columns
+        .slice(1)
+        .forEach(
+          (
+            column,
+            colIndex
+          ) => {
 
-          const statusText =
-            status === 1
-              ? "✓"
-              : status === 2
-                ? "★"
-                : status === 3
-                  ? "✗"
-                  : "";
+            const status =
+              row.variants[column];
 
-          ctx.textAlign = "center";
 
-          ctx.fillText(
-            statusText,
-            xOffset +
+            /*
+            ==========================================
+            VARIANTE INEXISTANTE
+            ==========================================
+            */
+
+            if (
+              status === undefined
+            ) {
+
+              ctx.fillStyle =
+                rowIndex % 2 === 0
+                  ? "#0b2857"
+                  : "#082044";
+
+              ctx.fillRect(
+                xOffset,
+                yOffset,
+                columnWidths[
+                  colIndex + 1
+                ],
+                rowHeight
+              );
+
+            }
+
+
+            /*
+            ==========================================
+            VARIANTE EXISTANTE
+            ==========================================
+            */
+
+            else {
+
+              let background =
+                "#0f172a";
+
+
+              let statusText =
+                "—";
+
+
+              /*
+              OBTENU
+              */
+
+              if (
+                status === 1
+              ) {
+
+                background =
+                  "#10b981";
+
+                statusText =
+                  "✓";
+
+              }
+
+
+              /*
+              MAÎTRISÉ
+              */
+
+              else if (
+                status === 2
+              ) {
+
+                background =
+                  "#fbbf24";
+
+                statusText =
+                  "★";
+
+              }
+
+
+              /*
+              PERDU
+              */
+
+              else if (
+                status === 3
+              ) {
+
+                background =
+                  "#dc2626";
+
+                statusText =
+                  "✗";
+
+              }
+
+
+              /*
+              ======================================
+              FOND DE LA CASE
+              ======================================
+              */
+
+              ctx.fillStyle =
+                background;
+
+
+              ctx.fillRect(
+                xOffset,
+                yOffset,
+                columnWidths[
+                  colIndex + 1
+                ],
+                rowHeight
+              );
+
+
+              /*
+              ======================================
+              SYMBOLE
+              ======================================
+              */
+
+              ctx.fillStyle =
+                "#ffffff";
+
+
+              ctx.font =
+                "bold 26px Arial";
+
+
+              ctx.textAlign =
+                "center";
+
+
+              ctx.fillText(
+                statusText,
+                xOffset +
+                  columnWidths[
+                    colIndex + 1
+                  ] / 2,
+                yOffset +
+                  rowHeight / 2 +
+                  9
+              );
+
+            }
+
+
+            /*
+            ==========================================
+            BORDURE
+            ==========================================
+            */
+
+            ctx.strokeStyle =
+              "#315b8f";
+
+
+            ctx.strokeRect(
+              xOffset,
+              yOffset,
               columnWidths[
                 colIndex + 1
-              ] /
-              2,
-            yOffset +
-              rowHeight /
-              2 +
-              5
-          );
-
-          xOffset +=
-            columnWidths[
-              colIndex + 1
-            ];
-
-        }
-
-      );
+              ],
+              rowHeight
+            );
 
 
-      yOffset += rowHeight;
+            xOffset +=
+              columnWidths[
+                colIndex + 1
+              ];
+
+          }
+        );
 
     }
-
   );
 
 
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#bcdcff";
-  ctx.font = "bold 16px Arial";
+  /*
+  ====================================================
+  FOOTER
+  ====================================================
+  */
+
+  const footerY =
+    tableY +
+    rowHeight +
+    rows.length *
+    rowHeight;
+
+
+  ctx.textAlign =
+    "center";
+
+
+  ctx.fillStyle =
+    "#bcdcff";
+
+
+  ctx.font =
+    "bold 16px Arial";
+
+
   ctx.fillText(
     "Esprits Fortnite — Collection Tracker",
     totalWidth / 2,
-    totalHeight - 45
+    footerY + 45
   );
 
-  ctx.font = "14px Arial";
+
+  ctx.font =
+    "14px Arial";
+
+
   ctx.fillText(
     "Allez sur https://drolfoam.github.io/esprits-fortnite-tracker/",
     totalWidth / 2,
-    totalHeight - 20
+    footerY + 75
   );
 
 
+  /*
+  ====================================================
+  TÉLÉCHARGEMENT
+  ====================================================
+  */
+
   const link =
-    document.createElement(
-      "a"
-    );
+    document.createElement("a");
+
 
   link.href =
     canvas.toDataURL(
       "image/png"
     );
 
+
   link.download =
     "esprits-collection.png";
+
 
   link.click();
 
